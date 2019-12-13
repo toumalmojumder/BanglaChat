@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "183286104138",
+    "firebase_url": "https://bangla-chat-3d155.firebaseio.com",
+    "project_id": "bangla-chat-3d155",
+    "storage_bucket": "bangla-chat-3d155.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183286104138:android:d7223398580b3aaee7a6b3",
+        "android_client_info": {
+          "package_name": "com.toumal.banglachat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183286104138-mvcu66qt12s3gl8m0u57gua049sm042e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.toumal.banglachat",
+            "certificate_hash": "3e832ba288f55aab1bd358ec1f56e14f98990524"
+          }
+        },
+        {
+          "client_id": "183286104138-drimu8a0ve7ar8k1scfdti4ma9vo04b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJrNZRq1iMd-fR6ViTeHqYJE9qkDyZYF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183286104138-drimu8a0ve7ar8k1scfdti4ma9vo04b8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
