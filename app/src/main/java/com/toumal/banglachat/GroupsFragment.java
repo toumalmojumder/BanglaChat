@@ -1,6 +1,7 @@
 package com.toumal.banglachat;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -48,6 +50,16 @@ public class GroupsFragment extends Fragment {
         groupReference = FirebaseDatabase.getInstance().getReference().child("Groups");
         InitializeFields();
         RetrieveAndDisplayGroups();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String currentGroupName = parent.getItemAtPosition(position).toString();
+                Intent groupChatIntent = new Intent(getContext(),GroupChatActivity.class);
+                groupChatIntent.putExtra("groupName",currentGroupName);
+                startActivity(groupChatIntent);
+            }
+        });
+
         return groupFragmentView;
     }
 
@@ -55,7 +67,7 @@ public class GroupsFragment extends Fragment {
 
     private void InitializeFields() {
         listView = groupFragmentView.findViewById(R.id.list_view);
-        arrayAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,list_of_groups);
+        arrayAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_list_item_1,list_of_groups);
         listView.setAdapter(arrayAdapter);
     }
     private void RetrieveAndDisplayGroups() {
