@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth myauth;
 
-    private Button loginButton;
+    private Button loginButton,phoneLogin;
     private EditText userEmail,userPassword;
     private TextView needNewAccountLink, forgetPasswordLink;
 
@@ -41,6 +41,15 @@ public class LoginActivity extends AppCompatActivity {
         userPassword = findViewById(R.id.login_password);
         needNewAccountLink = findViewById(R.id.need_new_account);
         forgetPasswordLink = findViewById(R.id.forgot_password_link);
+        phoneLogin = findViewById(R.id.phone_login_button);
+
+        phoneLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent phoneLoginIntent = new Intent(LoginActivity.this,PhoneLoginActivity.class);
+                startActivity(phoneLoginIntent);
+            }
+        });
         loadingBar = new ProgressDialog(this);
 
         needNewAccountLink.setOnClickListener(new View.OnClickListener() {
