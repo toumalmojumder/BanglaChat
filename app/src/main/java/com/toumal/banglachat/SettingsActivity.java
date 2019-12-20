@@ -1,9 +1,11 @@
 package com.toumal.banglachat;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +21,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
@@ -32,12 +39,20 @@ public class SettingsActivity extends AppCompatActivity {
     private String currentUser;
     private FirebaseAuth myauth;
     private DatabaseReference rootReference;
+    private static final int GalleryPick =1;
+    private StorageReference userProfileImageReference;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        myauth = FirebaseAuth.getInstance();
+        currentUser = myauth.getCurrentUser().getUid();
+        rootReference = FirebaseDatabase.getInstance().getReference();
+        userProfileImageReference = FirebaseStorage.getInstance().getReference().child("Profile Images");
+
         InitializeFields();
 
         userName.setVisibility(View.INVISIBLE);
@@ -51,6 +66,17 @@ public class SettingsActivity extends AppCompatActivity {
         
         RetrieveUserInfo();
 
+        userProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gelleryIntent = new Intent();
+                gelleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+                gelleryIntent.setType("image/*");
+                startActivityForResult(gelleryIntent,GalleryPick);
+
+            }
+        });
+
     }
 
 
@@ -60,9 +86,41 @@ public class SettingsActivity extends AppCompatActivity {
         userName = findViewById(R.id.set_user_name);
         userStatus = findViewById(R.id.set_profile_status);
         userProfileImage = findViewById(R.id.set_profile_image);
-        myauth = FirebaseAuth.getInstance();
-        currentUser = myauth.getCurrentUser().getUid();
-        rootReference = FirebaseDatabase.getInstance().getReference();
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==GalleryPick && resultCode ==RESULT_OK &&data!=null){
+            Uri ImageUri = data.getData();
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(this);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if(resultCode==RESULT_OK){
+                Uri resultUri = result.getUri();
+                StorageReference filePath = userProfileImageReference.child(currentUser+".jpg");
+                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(SettingsActivity.this,"Profile Image uploaded Successfully...",Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            String message = task.getException().toString();
+                            Toast.makeText(SettingsActivity.this,"Error: "+message,Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+            }
+        }
+
     }
 
     private void UpdateSettings() {
