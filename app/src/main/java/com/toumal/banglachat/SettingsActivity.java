@@ -3,6 +3,7 @@ package com.toumal.banglachat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
 
+
     private Button UpdateAccountSetting;
     private EditText userName, userStatus;
     private CircleImageView userProfileImage;
@@ -47,6 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
     private StorageReference userProfileImageReference;
     private ProgressDialog loadingBar;
 
+    private  Toolbar SettingsToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
                 UpdateSettings();
             }
         });
-        
+
         RetrieveUserInfo();
 
         userProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +97,11 @@ public class SettingsActivity extends AppCompatActivity {
         loadingBar =new ProgressDialog(SettingsActivity.this);
 
 
+        SettingsToolBar = findViewById(R.id.setting_tool_bar);
+        setSupportActionBar(SettingsToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Account Settings");
     }
 
     @Override
@@ -122,14 +130,14 @@ public class SettingsActivity extends AppCompatActivity {
                             rootReference.child("Users").child(currentUser).child("image").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                 if(task.isSuccessful()){
-                                     Toast.makeText(SettingsActivity.this,"Image save in database successfully",Toast.LENGTH_LONG).show();
-                                     loadingBar.dismiss();
-                                 }
-                                 else{
-                                     String message = task.getException().toString();
-                                     Toast.makeText(SettingsActivity.this,"Error: "+message,Toast.LENGTH_LONG).show();
-                                 }
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(SettingsActivity.this,"Image save in database successfully",Toast.LENGTH_LONG).show();
+                                        loadingBar.dismiss();
+                                    }
+                                    else{
+                                        String message = task.getException().toString();
+                                        Toast.makeText(SettingsActivity.this,"Error: "+message,Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             });
                         }
@@ -147,7 +155,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void UpdateSettings() {
         String setUserName = userName.getText().toString();
         String setStatus = userStatus.getText().toString();
-       // String setimage = ImageVIew.getDrawable();
+        // String setimage = ImageVIew.getDrawable();
 
 
         if(setUserName.isEmpty()){
@@ -163,19 +171,19 @@ public class SettingsActivity extends AppCompatActivity {
             profilMap.put("uid",currentUser);
             profilMap.put("name",setUserName);
             profilMap.put("status",setStatus);
-         rootReference.child("Users").child(currentUser).updateChildren(profilMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-             @Override
-             public void onComplete(@NonNull Task<Void> task) {
-                 if(task.isSuccessful()){
-                     Toast.makeText(SettingsActivity.this, "Profile Updated Successfully",Toast.LENGTH_LONG).show();
-                     SendUserToMainActivity();
-                 }
-                 else{
-                     String message = task.getException().toString();
-                     Toast.makeText(SettingsActivity.this, "Error: "+message,Toast.LENGTH_LONG).show();
-                 }
-             }
-         });
+            rootReference.child("Users").child(currentUser).updateChildren(profilMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(SettingsActivity.this, "Profile Updated Successfully",Toast.LENGTH_LONG).show();
+                        SendUserToMainActivity();
+                    }
+                    else{
+                        String message = task.getException().toString();
+                        Toast.makeText(SettingsActivity.this, "Error: "+message,Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
     }
     private void SendUserToMainActivity() {
@@ -185,40 +193,40 @@ public class SettingsActivity extends AppCompatActivity {
         finish();
     }
     private void RetrieveUserInfo() {
-rootReference.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        if((dataSnapshot.exists())&&(dataSnapshot.hasChild("name"))&&(dataSnapshot.hasChild("image"))){
-            String retrieveUserName = dataSnapshot.child("name").getValue().toString();
-            String retrieveStatus = dataSnapshot.child("status").getValue().toString();
-           String retrieveImage = dataSnapshot.child("image").getValue().toString();
+        rootReference.child("Users").child(currentUser).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if((dataSnapshot.exists())&&(dataSnapshot.hasChild("name"))&&(dataSnapshot.hasChild("image"))){
+                    String retrieveUserName = dataSnapshot.child("name").getValue().toString();
+                    String retrieveStatus = dataSnapshot.child("status").getValue().toString();
+                    String retrieveImage = dataSnapshot.child("image").getValue().toString();
 
-            userName.setText(retrieveUserName);
-            userStatus.setText(retrieveStatus);
-            Log.d("retrieveImage",retrieveImage);
-            Picasso.get().load(retrieveImage).into(userProfileImage);
+                    userName.setText(retrieveUserName);
+                    userStatus.setText(retrieveStatus);
+                    Log.d("retrieveImage",retrieveImage);
+                    Picasso.get().load(retrieveImage).into(userProfileImage);
 
-        }
-        else if((dataSnapshot.exists())&&(dataSnapshot.hasChild("name"))){
-            String retrieveUserName = dataSnapshot.child("name").getValue().toString();
-            String retrieveStatus = dataSnapshot.child("status").getValue().toString();
+                }
+                else if((dataSnapshot.exists())&&(dataSnapshot.hasChild("name"))){
+                    String retrieveUserName = dataSnapshot.child("name").getValue().toString();
+                    String retrieveStatus = dataSnapshot.child("status").getValue().toString();
 
 
-            userName.setText(retrieveUserName);
-            userStatus.setText(retrieveStatus);
-        }
-        else{
-            userName.setVisibility(View.VISIBLE);
-            Toast.makeText(SettingsActivity.this, "Please set & Update your profile information...",Toast.LENGTH_LONG).show();
+                    userName.setText(retrieveUserName);
+                    userStatus.setText(retrieveStatus);
+                }
+                else{
+                    userName.setVisibility(View.VISIBLE);
+                    Toast.makeText(SettingsActivity.this, "Please set & Update your profile information...",Toast.LENGTH_LONG).show();
 
-        }
-    }
+                }
+            }
 
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-    }
-});
+            }
+        });
 
 
     }
