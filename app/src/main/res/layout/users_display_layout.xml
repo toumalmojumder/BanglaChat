@@ -33,7 +33,7 @@
                     android:id="@+id/userProfileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="user name"
+                    android:text="User Name"
                     android:textAlignment="textStart"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -53,12 +53,41 @@
                 android:id="@+id/user_Status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="user name"
+                android:text="User Status"
                 android:textAlignment="textStart"
                 android:textSize="15sp"
                 android:layout_marginStart="10dp"
                 />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:id="@+id/requestAcceptButton"
+                android:text="Accept"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                android:background="#027725"
+                android:textColor="#fff"
+                    android:visibility="invisible"
+                />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:id="@+id/requestCancelButton"
+                    android:text="Cancel"
+                    android:textSize="16sp"
+                    android:textAllCaps="false"
+                    android:background="#F12746"
+                    android:textColor="#fff"
+                    android:layout_marginStart="15dp"
+                    android:visibility="invisible"
+                    />
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

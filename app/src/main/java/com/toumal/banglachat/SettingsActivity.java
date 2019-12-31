@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText userName, userStatus;
     private CircleImageView userProfileImage;
     private String currentUser;
-    private FirebaseAuth myauth;
+    private FirebaseAuth myAuth;
     private DatabaseReference rootReference;
     private static final int GalleryPick =1;
     private StorageReference userProfileImageReference;
@@ -53,8 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        myauth = FirebaseAuth.getInstance();
-        currentUser = myauth.getCurrentUser().getUid();
+        myAuth = FirebaseAuth.getInstance();
+        currentUser = myAuth.getCurrentUser().getUid();
         rootReference = FirebaseDatabase.getInstance().getReference();
         userProfileImageReference = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
@@ -99,9 +99,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==GalleryPick && resultCode ==RESULT_OK &&data!=null){
+        if(requestCode==GalleryPick && resultCode ==RESULT_OK && data!=null){
             Uri ImageUri = data.getData();
-            CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(this);
+            CropImage.activity(ImageUri).setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(this);
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -147,6 +147,9 @@ public class SettingsActivity extends AppCompatActivity {
     private void UpdateSettings() {
         String setUserName = userName.getText().toString();
         String setStatus = userStatus.getText().toString();
+       // String setimage = ImageVIew.getDrawable();
+
+
         if(setUserName.isEmpty()){
             Toast.makeText(SettingsActivity.this, "Please Write your user name . . . ",Toast.LENGTH_LONG).show();
 
@@ -156,11 +159,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
         else{
-            HashMap<String,String> profilMap = new HashMap<>();
+            HashMap<String,Object> profilMap = new HashMap<>();
             profilMap.put("uid",currentUser);
             profilMap.put("name",setUserName);
             profilMap.put("status",setStatus);
-         rootReference.child("Users").child(currentUser).setValue(profilMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+         rootReference.child("Users").child(currentUser).updateChildren(profilMap).addOnCompleteListener(new OnCompleteListener<Void>() {
              @Override
              public void onComplete(@NonNull Task<Void> task) {
                  if(task.isSuccessful()){
