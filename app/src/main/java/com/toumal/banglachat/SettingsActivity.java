@@ -119,6 +119,7 @@ public class SettingsActivity extends AppCompatActivity {
                 loadingBar.setCanceledOnTouchOutside(false);
                 loadingBar.show();
                 Uri resultUri = result.getUri();
+                Log.d("Profile Image Reference",resultUri.toString());
                 StorageReference filePath = userProfileImageReference.child(currentUser+".jpg");
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -127,6 +128,7 @@ public class SettingsActivity extends AppCompatActivity {
                             Toast.makeText(SettingsActivity.this,"Profile Image uploaded Successfully...",Toast.LENGTH_LONG).show();
 
                             final String downloadUrl = task.getResult().getDownloadUrl().toString();
+                            Log.d("download url",downloadUrl);
                             rootReference.child("Users").child(currentUser).child("image").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

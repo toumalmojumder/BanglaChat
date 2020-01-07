@@ -114,6 +114,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         if (fromMessageType.equals("text"))
         {
+
             if (fromUserID.equals(messageSenderId))
             {
                 messageViewHolder.senderMessageText.setVisibility(View.VISIBLE);

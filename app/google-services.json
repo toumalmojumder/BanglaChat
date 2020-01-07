@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "183286104138",
-    "firebase_url": "https://bangla-chat-3d155.firebaseio.com",
-    "project_id": "bangla-chat-3d155",
-    "storage_bucket": "bangla-chat-3d155.appspot.com"
+    "project_number": "130083566102",
+    "firebase_url": "https://bangla-chat-f1f38.firebaseio.com",
+    "project_id": "bangla-chat-f1f38",
+    "storage_bucket": "bangla-chat-f1f38.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:183286104138:android:d7223398580b3aaee7a6b3",
+        "mobilesdk_app_id": "1:130083566102:android:9cd5368cf99d1f2e017b37",
         "android_client_info": {
           "package_name": "com.toumal.banglachat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "183286104138-mvcu66qt12s3gl8m0u57gua049sm042e.apps.googleusercontent.com",
+          "client_id": "130083566102-f0hnen10i8rcfaag8o01i74jjruq6767.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.toumal.banglachat",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "183286104138-drimu8a0ve7ar8k1scfdti4ma9vo04b8.apps.googleusercontent.com",
+          "client_id": "130083566102-lg09t83qoqk6beg605nupqfqsjnepa9n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJrNZRq1iMd-fR6ViTeHqYJE9qkDyZYF0"
+          "current_key": "AIzaSyBOK7pfBe6DG1ePkjudm2uNsSXJ7Bwcra4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "183286104138-drimu8a0ve7ar8k1scfdti4ma9vo04b8.apps.googleusercontent.com",
+              "client_id": "130083566102-lg09t83qoqk6beg605nupqfqsjnepa9n.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
