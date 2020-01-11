@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -93,9 +94,9 @@ public class ChatFragment extends Fragment {
                                         Picasso.get().load(retImage[0]).into(holder.profileImage);
                                     }
 
+
                                     final String retName = dataSnapshot.child("name").getValue().toString();
                                     final String retStatus = dataSnapshot.child("status").getValue().toString();
-
                                     holder.userName.setText(retName);
 
 
@@ -108,15 +109,19 @@ public class ChatFragment extends Fragment {
                                         if (state.equals("online"))
                                         {
                                             holder.userStatus.setText("online");
+                                            holder.onlineIcon.setVisibility(View.VISIBLE);
                                         }
                                         else if (state.equals("offline"))
                                         {
                                             holder.userStatus.setText("Last Seen: " + date + " " + time);
+                                            holder.onlineIcon.setVisibility(View.INVISIBLE);
+
                                         }
                                     }
                                     else
                                     {
                                         holder.userStatus.setText("offline");
+                                        holder.onlineIcon.setVisibility(View.INVISIBLE);
                                     }
 
                                     holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +165,7 @@ public class ChatFragment extends Fragment {
     {
         CircleImageView profileImage;
         TextView userStatus, userName;
-
+        ImageView onlineIcon;
 
         public ChatsViewHolder(@NonNull View itemView)
         {
@@ -169,6 +174,7 @@ public class ChatFragment extends Fragment {
             profileImage = itemView.findViewById(R.id.usersProfileImage);
             userStatus = itemView.findViewById(R.id.user_Status);
             userName = itemView.findViewById(R.id.userProfileName);
+            onlineIcon = itemView.findViewById(R.id.userOnlineStatus);
         }
     }
 

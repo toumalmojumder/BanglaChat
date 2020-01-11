@@ -223,7 +223,9 @@ public class RequestFragment extends Fragment {
 
                                             }
                                         });
+
                                     }
+
                                     else if (type.equals("sent"))
                                     {
                                         Button request_sent_btn = holder.itemView.findViewById(R.id.requestAcceptButton);
