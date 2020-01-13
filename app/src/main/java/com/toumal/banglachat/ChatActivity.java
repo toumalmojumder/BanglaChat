@@ -251,6 +251,7 @@ private Uri fileUri;
             }
 
 
+
             else if(checker.equals("image")){
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("image File");
 
@@ -320,7 +321,7 @@ private Uri fileUri;
                 Toast.makeText(this, "Nothing Selected", Toast.LENGTH_SHORT).show();
             }
         }
-       
+
     }
 
     private void DisplayLastSeen()
@@ -368,16 +369,14 @@ private Uri fileUri;
                     public void onChildAdded(DataSnapshot dataSnapshot, String s)
                     {
                         Messages messages = dataSnapshot.getValue(Messages.class);
-
                         messagesList.add(messages);
-
                         messageAdapter.notifyDataSetChanged();
-
                         userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
 
                     }
 

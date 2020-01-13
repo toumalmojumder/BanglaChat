@@ -11,12 +11,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth myauth;
     private DatabaseReference rootReference;
     private String currentUserId;
+
+    private View dialogueView;
+
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if((dataSnapshot.child("name").exists())){
-                    Toast.makeText(MainActivity.this,"Welcome",Toast.LENGTH_LONG).show();
+                   // Toast.makeText(MainActivity.this,"Welcome",Toast.LENGTH_LONG).show();
                 }
                 else{
                     SendUserToSettingsActivity();
@@ -152,33 +159,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void RequestNewGroup() {
-        AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this,R.style.AlertDialog);
-        builder.setTitle("Enter Group Name : ");
-        final EditText groupNameField = new EditText(MainActivity.this);
-        groupNameField.setHint("e.g Dhaka's Gang");
-        builder.setView(groupNameField);
-        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
+
+        TextView cancel,create;
+        final TextInputEditText groupname;
+
+        dialogueView = getLayoutInflater().inflate(R.layout.create_group, null);
+
+        cancel = dialogueView.findViewById(R.id.cancelbutton);
+        create = dialogueView.findViewById(R.id.createbutton);
+        groupname = dialogueView.findViewById(R.id.groupname);
+
+
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String groupName = groupNameField.getText().toString();
-                if(groupName.isEmpty()){
-                    Toast.makeText(MainActivity.this,"Please Write a Group Name...",Toast.LENGTH_LONG).show();
-                }
-                else{
-                    CreateNewGroup(groupName);
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+        create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String groupnametext = groupname.getText().toString();
+                if(groupnametext.isEmpty()){
+                    groupname.setError("Field Can Not Be Empty!");
+                    groupname.requestFocus();
+                }else {
+                    CreateNewGroup(groupnametext);
+
                 }
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
+        builder.setView(null);
+        builder.setView(dialogueView);
+        alertDialog=builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.dismiss();
+        alertDialog.show();
     }
 
     private void CreateNewGroup(final String groupName) {
@@ -187,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(MainActivity.this,groupName+" group is created successfully...",Toast.LENGTH_LONG).show();
+                    alertDialog.dismiss();
 
                 }
             }
