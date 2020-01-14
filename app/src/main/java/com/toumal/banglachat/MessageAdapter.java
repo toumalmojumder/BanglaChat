@@ -265,8 +265,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if(which ==0){
-                                    deleteSendMessages(position,messageViewHolder);
-
+                                    deleteSendMessages(position, messageViewHolder);
                                     Intent intent = new Intent(messageViewHolder.itemView.getContext(),MainActivity.class);
                                     messageViewHolder.itemView.getContext().startActivity(intent);
 
@@ -311,7 +310,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if(which ==0){
-
                                     deleteReceiveMessages(position,messageViewHolder);
                                     Intent intent = new Intent(messageViewHolder.itemView.getContext(),MainActivity.class);
                                     messageViewHolder.itemView.getContext().startActivity(intent);
@@ -358,6 +356,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if(which ==0){
+
                                     deleteReceiveMessages(position,messageViewHolder);
                                     Intent intent = new Intent(messageViewHolder.itemView.getContext(),MainActivity.class);
                                     messageViewHolder.itemView.getContext().startActivity(intent);
